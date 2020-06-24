@@ -24,11 +24,16 @@ dependencies {
 	implementation 'com.h2database:h2'
 
 	compileOnly 'org.projectlombok:lombok'
+	// https://mvnrepository.com/artifact/javax.validation/validation-api
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+
+
 }
 
 test {
