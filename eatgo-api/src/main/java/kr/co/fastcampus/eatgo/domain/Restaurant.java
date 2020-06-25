@@ -1,5 +1,6 @@
 package kr.co.fastcampus.eatgo.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -27,8 +28,13 @@ public class Restaurant {
     @NotEmpty
     private  String address;
 
-   @Transient
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
+
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Review> reviews;
 
     public Restaurant(String name, String address) {
         this.name = name;
@@ -54,4 +60,8 @@ public class Restaurant {
         this.address = address;
     }
 
+    public void setReviews(List<Review> reviews) {
+        this.reviews = new ArrayList<>(reviews);
+
+    }
 }

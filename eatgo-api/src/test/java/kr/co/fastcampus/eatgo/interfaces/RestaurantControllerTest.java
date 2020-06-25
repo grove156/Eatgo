@@ -32,15 +32,6 @@ class RestaurantControllerTest {
     @MockBean
     private RestaurantService restaurantService;
 
-//    @SpyBean(RestaurantService.class)
-//    private RestaurantService restaurantService;
-
-//    @SpyBean(RestaurantRepositoryImpl.class)
-//   private RestaurantRepositoryImpl restaurantRepository;
-
-//    @SpyBean(MenuItemRepositoryImpl.class)
-//    private MenuItemRepository menuItemRepository;
-
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
@@ -63,7 +54,7 @@ class RestaurantControllerTest {
 
     @Test
     public void detailWithExisted() throws Exception {
-        Restaurant restaurant1 = Restaurant.builder()
+        Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .name("Bob zip")
                 .address("Seoul")
@@ -72,16 +63,16 @@ class RestaurantControllerTest {
                 .name("Kimchi")
                 .build();
 
-        restaurant1.setMenuItems(Arrays.asList(menuItem));
+        restaurant.setMenuItems(Arrays.asList(menuItem));
 
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(2020L)
-                .name("Cyber food")
-                .address("Seroul")
+        Review review = Review.builder()
+                .name("Joker")
+                .score(5)
+                .description("Great")
                 .build();
+        restaurant.setReviews(Arrays.asList(review));
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
-        given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
@@ -93,14 +84,9 @@ class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
-                ));
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"id\":2020")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Cyber food\"")
+                        containsString("Great")
                 ));
     }
 
